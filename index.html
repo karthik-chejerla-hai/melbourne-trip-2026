@@ -141,6 +141,9 @@ section.more > .wrap > p{color:var(--muted);margin:0 0 14px;max-width:60ch}
 .check input{width:20px;height:20px;margin-top:3px;accent-color:var(--euc);flex:none}
 .check input:checked + span{color:var(--muted);text-decoration:line-through}
 .check small{display:block;color:var(--muted);text-decoration:none}
+.town{font-size:1.25rem;font-weight:700;margin:22px 0 10px}
+.town small{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-weight:400;font-size:.9rem;color:var(--muted);margin-left:8px}
+.eats .addr{color:var(--ink);font-size:.9rem;margin:2px 0 0}
 .eats{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:0;margin:0;list-style:none}
 .eats li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .eats a{font-weight:700}
@@ -239,7 +242,7 @@ footer{color:var(--muted);font-size:.9rem;padding:36px 0 48px}
   <div class="wrap">
     <h2>Cafes and bakeries</h2>
     <p>Many places close or shorten hours between Christmas and New Year. Check before heading over.</p>
-    <ul class="eats" id="eats"></ul>
+    <div id="eats"></div>
   </div>
 </section>
 
@@ -419,17 +422,30 @@ const plans = {
  }
 };
 
+/* [name, map search, note, address or suburb] grouped by town */
 const eats = [
- ["Lune, Maxi Lune on Lonsdale St","Maxi Lune Lonsdale Street Melbourne","The big new CBD shop. Open until 5pm."],
- ["Lune, Fitzroy","Lune Croissanterie Fitzroy","The original warehouse. Expect a queue."],
- ["Hopetoun Tea Rooms","Hopetoun Tea Rooms Block Arcade","Cake window in the Block Arcade. A treat for the grandparents."],
- ["American Doughnut Kitchen","American Doughnut Kitchen Queen Victoria Market","Hot jam doughnuts at the market."],
- ["Brunetti, Carlton","Brunetti Lygon Street Carlton","Italian pastries and cakes."],
- ["Pidapipó","Pidapipo Lygon Street Carlton","Gelato that kids and adults both love."],
- ["Tivoli Road Bakery","Tivoli Road Bakery South Yarra","Excellent bread and pastries in South Yarra."],
- ["Higher Ground","Higher Ground Melbourne","Big, airy CBD cafe. Easy with a group."],
- ["Berry Donut Van","Berry Donut Van","Coast route, day 1."],
- ["Beechworth Bakery","Beechworth Bakery","On the drive home, 29 Dec."]
+ {town:"Melbourne CBD", sub:"Melbourne, VIC", items:[
+  ["Lune, Maxi Lune","Maxi Lune Lonsdale Street Melbourne","The big new CBD shop. Open until 5pm.","Lonsdale St, Melbourne CBD"],
+  ["Hopetoun Tea Rooms","Hopetoun Tea Rooms Block Arcade","Cake window in the Block Arcade. A treat for the grandparents.","Block Arcade, 282 Collins St, Melbourne CBD"],
+  ["American Doughnut Kitchen","American Doughnut Kitchen Queen Victoria Market","Hot jam doughnuts at the market.","Queen Victoria Market, Elizabeth St, Melbourne CBD"],
+  ["Higher Ground","Higher Ground Melbourne","Big, airy CBD cafe. Easy with a group.","650 Little Bourke St, Melbourne CBD"]
+ ]},
+ {town:"Fitzroy", sub:"Melbourne, VIC", items:[
+  ["Lune, Fitzroy","Lune Croissanterie Fitzroy","The original warehouse. Expect a queue.","119 Rose St, Fitzroy"]
+ ]},
+ {town:"Carlton", sub:"Melbourne, VIC", items:[
+  ["Brunetti","Brunetti Lygon Street Carlton","Italian pastries and cakes.","380 Lygon St, Carlton"],
+  ["Pidapipó","Pidapipo Lygon Street Carlton","Gelato that kids and adults both love.","299 Lygon St, Carlton"]
+ ]},
+ {town:"South Yarra", sub:"Melbourne, VIC", items:[
+  ["Tivoli Road Bakery","Tivoli Road Bakery South Yarra","Excellent bread and pastries.","3 Tivoli Rd, South Yarra"]
+ ]},
+ {town:"Berry", sub:"NSW, coast route day 1", items:[
+  ["Berry Donut Van","Berry Donut Van","The classic early lunch stop.","Queen St, Berry"]
+ ]},
+ {town:"Beechworth", sub:"VIC, drive home 29 Dec", items:[
+  ["Beechworth Bakery","Beechworth Bakery","Pies and vanilla slice.","Ford St, Beechworth"]
+ ]}
 ];
 
 const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
@@ -507,8 +523,11 @@ function render(tab){
   document.querySelectorAll(".day").forEach(el => io.observe(el));
 }
 
-document.getElementById("eats").innerHTML = eats.map(([n,q,p]) =>
-  `<li><a href="${searchUrl(q)}" target="_blank" rel="noopener">${esc(n)}</a><p>${esc(p)}</p></li>`).join("");
+document.getElementById("eats").innerHTML = eats.map(g =>
+  `<h3 class="town">${esc(g.town)}<small>${esc(g.sub)}</small></h3><ul class="eats">` +
+  g.items.map(([n,q,p,a]) =>
+    `<li><a href="${searchUrl(q)}" target="_blank" rel="noopener">${esc(n)}</a><p class="addr">${esc(a)}</p><p>${esc(p)}</p></li>`).join("") +
+  `</ul>`).join("");
 
 const tabFromHash = () => location.hash.slice(1).startsWith("hume") ? "hume" : "coast";
 function syncFromHash(){
