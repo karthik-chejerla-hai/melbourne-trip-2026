@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The long way to Melbourne · Christmas 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF1EE; --surface:#FFFFFF; --ink:#15232E; --muted:#526470; --line:#C9D8D2;
+  --coast:#1F5C7A; --euc:#3F6E55; --ochre:#8E6418; --ochre-soft:#E8C97E; --home:#5B5F80;
+  --coast-bg:#E1EEF4; --euc-bg:#E2EFE7; --ochre-bg:#F6ECD6; --home-bg:#E7E8F2;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1920; --surface:#14242D; --ink:#E3ECE9; --muted:#9DB0B6; --line:#24404A;
+    --coast:#78B9D6; --euc:#93C6A8; --ochre:#E4B862; --ochre-soft:#7A5A1E; --home:#AEB2D2;
+    --coast-bg:#16303D; --euc-bg:#17302A; --ochre-bg:#30281A; --home-bg:#22243A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1920; --surface:#14242D; --ink:#E3ECE9; --muted:#9DB0B6; --line:#24404A;
+  --coast:#78B9D6; --euc:#93C6A8; --ochre:#E4B862; --ochre-soft:#7A5A1E; --home:#AEB2D2;
+  --coast-bg:#16303D; --euc-bg:#17302A; --ochre-bg:#30281A; --home-bg:#22243A;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1.0625rem;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--coast);outline-offset:2px;border-radius:6px}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:"Bricolage Grotesque","Avenir Next","Segoe UI",sans-serif;line-height:1.1;margin:0}
+
+/* Hero */
+.hero{padding:40px 0 8px}
+.hero h1{font-size:clamp(2.4rem,7vw,4.2rem);font-weight:800;letter-spacing:-0.02em;max-width:12ch}
+.hero > p{color:var(--muted);max-width:56ch;margin:14px 0 0}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin:24px 0 0;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;width:fit-content;max-width:100%}
+.tabs button{font:inherit;font-weight:700;font-size:1rem;border:0;background:transparent;color:var(--muted);padding:9px 16px;border-radius:9px;cursor:pointer}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--surface)}
+.sum{margin:14px 0 0;max-width:60ch}
+
+.map{margin:20px 0 8px;width:100%;height:auto;display:block}
+.map .rt{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.map .rt.coast{stroke:var(--coast)}
+.map .rt.gor{stroke:var(--ochre)}
+.map .rt.home{stroke:var(--home)}
+.map .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s ease-out forwards}
+.map .draw.d2{animation-delay:1.6s;animation-duration:1.4s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion: reduce){.map .draw{animation:none;stroke-dashoffset:0}}
+.map circle{fill:var(--surface);stroke:var(--ink);stroke-width:3}
+.map circle.big{stroke-width:4}
+.map text{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:21px;fill:var(--ink)}
+.map text.sm{font-weight:500;fill:var(--muted);font-size:18px}
+.map .stay circle{fill:var(--ink);stroke:var(--surface);stroke-width:3}
+.map .stay .m1{fill:var(--surface);stroke:none}
+.map .stay .m2{fill:var(--ink);stroke:none}
+.map circle.pass{stroke-width:2.5}
+.map text.n{font-family:"Atkinson Hyperlegible",sans-serif;font-weight:700;font-size:17px;fill:var(--ochre)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:0 0 8px;padding:0;list-style:none}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend i{width:22px;height:5px;border-radius:3px;display:inline-block}
+.legend svg{width:18px;height:18px;flex:none}
+
+/* Day nav */
+.daynav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:20px}
+.daynav ol{position:relative;display:flex;gap:6px;overflow-x:auto;list-style:none;margin:0 auto;padding:10px 20px;max-width:880px;scrollbar-width:none}
+.daynav ol::-webkit-scrollbar{display:none}
+.daynav a{display:flex;flex-direction:column;align-items:center;min-width:46px;padding:5px 6px;border-radius:10px;text-decoration:none;line-height:1.1;border:1.5px solid transparent}
+.daynav a span{font-size:.72rem;color:var(--muted)}
+.daynav a b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.15rem}
+.daynav a[data-kind="coast"] b{color:var(--coast)}
+.daynav a[data-kind="city"] b{color:var(--euc)}
+.daynav a[data-kind="trip"] b{color:var(--ochre)}
+.daynav a[data-kind="home"] b{color:var(--home)}
+.daynav a.on{background:var(--surface);border-color:var(--line)}
+
+/* Days */
+.days{padding:28px 0 8px}
+.day{display:grid;grid-template-columns:72px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid var(--line)}
+.date{text-align:center;padding-top:4px}
+.date .dow{display:block;font-size:.85rem;color:var(--muted)}
+.date .num{display:block;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2.6rem;line-height:1}
+.date .mon{display:block;font-size:.85rem;color:var(--muted)}
+.day[data-kind="coast"] .num{color:var(--coast)}
+.day[data-kind="city"] .num{color:var(--euc)}
+.day[data-kind="trip"] .num{color:var(--ochre)}
+.day[data-kind="home"] .num{color:var(--home)}
+.kind{display:inline-block;font-size:.8rem;padding:2px 10px;border-radius:99px;margin-bottom:6px}
+.day[data-kind="coast"] .kind{background:var(--coast-bg);color:var(--coast)}
+.day[data-kind="city"] .kind{background:var(--euc-bg);color:var(--euc)}
+.day[data-kind="trip"] .kind{background:var(--ochre-bg);color:var(--ochre)}
+.day[data-kind="home"] .kind{background:var(--home-bg);color:var(--home)}
+.day h3{font-size:1.55rem;font-weight:700;letter-spacing:-0.01em}
+.stats{color:var(--muted);margin:4px 0 0;font-size:.95rem}
+.route{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+.stops{list-style:none;margin:0;padding:0}
+.stops li{position:relative;padding:0 0 14px 32px}
+.stops li:last-child{padding-bottom:0}
+.stops li::before{content:"";position:absolute;left:5px;top:8px;width:11px;height:11px;border-radius:50%;background:var(--surface);border:2.5px solid var(--muted)}
+.stops li::after{content:"";position:absolute;left:10px;top:22px;bottom:-6px;width:2px;background:var(--line)}
+.stops li:last-child::after{display:none}
+.stops li.end::before{background:var(--ink);border-color:var(--ink)}
+.stops li.stop::before{display:none}
+.stops .no{position:absolute;z-index:1;left:0;top:1px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:.8rem;line-height:1;background:var(--ink);color:var(--surface)}
+.day[data-kind="coast"] .no{background:var(--coast)}
+.day[data-kind="city"] .no{background:var(--euc)}
+.day[data-kind="trip"] .no{background:var(--ochre)}
+.day[data-kind="home"] .no{background:var(--home)}
+.stops a{font-weight:700;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.stops a:hover{text-decoration-color:currentColor}
+.stops p{margin:2px 0 0;color:var(--muted);font-size:.95rem}
+.btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:9px 16px;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95rem;background:var(--ink);color:var(--surface)}
+.btn svg{width:18px;height:18px}
+.plan{margin:10px 0 0;padding-left:20px}
+.plan li{margin:4px 0}
+.sleep{margin:12px 0 0;font-size:.95rem;color:var(--muted)}
+.sleep b{color:var(--ink)}
+
+/* Sections */
+section.more{padding:36px 0 8px}
+section.more h2{font-size:1.9rem;font-weight:800;letter-spacing:-0.01em;margin-bottom:6px}
+section.more > .wrap > p{color:var(--muted);margin:0 0 14px;max-width:60ch}
+.check{list-style:none;padding:0;margin:0}
+.check li{border-bottom:1px solid var(--line)}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:12px 0;cursor:pointer}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--euc);flex:none}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+.check small{display:block;color:var(--muted);text-decoration:none}
+.eats{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:0;margin:0;list-style:none}
+.eats li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.eats a{font-weight:700}
+.eats p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+.notes{padding-left:20px;margin:0;max-width:66ch}
+.notes li{margin:8px 0}
+footer{color:var(--muted);font-size:.9rem;padding:36px 0 48px}
+
+@media (max-width:560px){
+  .day{grid-template-columns:52px 1fr;gap:12px}
+  .date .num{font-size:2rem}
+  .day h3{font-size:1.3rem}
+  .route{padding:14px}
+  .tabs{width:100%}
+  .tabs button{flex:1;padding:9px 8px}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap hero">
+  <h1>The long way to Melbourne</h1>
+  <p>Family road trip, 21 to 30 December 2026. Two route options, both ten days. Draft plan, so suggestions are welcome.</p>
+
+  <div class="tabs" role="tablist" aria-label="Route options">
+    <button role="tab" id="tab-coast" aria-controls="panel-coast" data-tab="coast">Coast road down</button>
+    <button role="tab" id="tab-hume" aria-controls="panel-hume" data-tab="hume">Hume both ways</button>
+  </div>
+
+  <div role="tabpanel" id="panel-coast" aria-labelledby="tab-coast">
+    <p class="sum">Down the NSW south coast with one night in Merimbula, two on Phillip Island, then Christmas around Victoria and home via the Hume.</p>
+    <svg class="map" viewBox="0 0 800 412" role="img" aria-label="Schematic route with overnight stays: Merimbula 1 night, Phillip Island 2 nights, Melbourne 4 nights, Apollo Bay 1 night on the Great Ocean Road loop, and Albury 1 night on the drive home">
+      <path class="rt home draw d2" pathLength="1" d="M265 285 C 330 230, 380 190, 440 165 S 560 105, 620 75 S 690 45, 715 40"/>
+      <path class="rt gor draw d2" pathLength="1" d="M265 285 C 220 320, 180 345, 140 352 S 85 352, 72 340 C 120 320, 190 300, 265 285"/>
+      <path class="rt coast draw" pathLength="1" d="M715 40 C 712 70, 700 95, 690 120 S 660 175, 640 205 S 610 250, 590 270 S 520 300, 470 302 S 380 312, 340 330 S 300 350, 290 348 S 270 320, 265 285"/>
+      <circle class="big" cx="715" cy="40" r="9"/><text x="700" y="30" text-anchor="end">Sydney</text>
+      <circle class="pass" cx="470" cy="302" r="5"/><text class="sm" x="470" y="333" text-anchor="middle">Lakes Entrance</text>
+      <g class="stay" transform="translate(640 205)"><circle r="12"/><circle class="m1" cx="-1" r="6"/><circle class="m2" cx="2.2" cy="-2.2" r="5"/></g>
+      <text x="662" y="210">Merimbula</text><text class="n" x="662" y="232">1 night</text>
+      <g class="stay" transform="translate(290 348)"><circle r="12"/><circle class="m1" cx="-1" r="6"/><circle class="m2" cx="2.2" cy="-2.2" r="5"/></g>
+      <text x="300" y="384" text-anchor="middle">Phillip Island</text><text class="n" x="300" y="405" text-anchor="middle">2 nights</text>
+      <g class="stay" transform="translate(265 285)"><circle r="13"/><circle class="m1" cx="-1" r="6.5"/><circle class="m2" cx="2.4" cy="-2.4" r="5.4"/></g>
+      <text x="248" y="250" text-anchor="end">Melbourne</text><text class="n" x="248" y="271" text-anchor="end">4 nights</text>
+      <g class="stay" transform="translate(140 352)"><circle r="12"/><circle class="m1" cx="-1" r="6"/><circle class="m2" cx="2.2" cy="-2.2" r="5"/></g>
+      <text x="120" y="388" text-anchor="middle">Apollo Bay</text><text class="n" x="120" y="408" text-anchor="middle">1 night</text>
+      <g class="stay" transform="translate(440 165)"><circle r="12"/><circle class="m1" cx="-1" r="6"/><circle class="m2" cx="2.2" cy="-2.2" r="5"/></g>
+      <text x="458" y="192">Albury</text><text class="n" x="458" y="213">1 night</text>
+    </svg>
+    <ul class="legend">
+      <li><i style="background:var(--coast)"></i>Coast road down</li>
+      <li><i style="background:var(--euc)"></i>Melbourne days</li>
+      <li><i style="background:var(--ochre)"></i>Day trips</li>
+      <li><i style="background:var(--home)"></i>Hume home</li>
+      <li><svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="11" style="fill:var(--ink)"/><circle cx="-1" r="5.5" style="fill:var(--surface)"/><circle cx="2" cy="-2" r="4.5" style="fill:var(--ink)"/></svg>Overnight stay</li>
+    </ul>
+  </div>
+
+  <div role="tabpanel" id="panel-hume" aria-labelledby="tab-hume" hidden>
+    <p class="sum">Hume Highway both ways with a night in Albury each way. Less time on the road, about a day and a half more in Melbourne, and Phillip Island as a day trip from the city.</p>
+    <svg class="map" viewBox="0 0 800 412" role="img" aria-label="Schematic route with overnight stays: Albury 2 nights (one each way), Melbourne 6 nights, Phillip Island as a day trip, and Apollo Bay 1 night on the Great Ocean Road">
+      <path class="rt home draw" pathLength="1" d="M715 40 S 690 45, 620 75 S 500 135, 440 165 S 330 230, 265 285"/>
+      <path class="rt gor draw d2" pathLength="1" d="M265 285 C 220 320, 180 345, 140 352 S 85 352, 72 340 C 120 320, 190 300, 265 285"/>
+      <path class="rt gor draw d2" pathLength="1" d="M265 285 C 292 300, 302 325, 290 348"/>
+      <circle class="big" cx="715" cy="40" r="9"/><text x="700" y="30" text-anchor="end">Sydney</text>
+      <g class="stay" transform="translate(440 165)"><circle r="12"/><circle class="m1" cx="-1" r="6"/><circle class="m2" cx="2.2" cy="-2.2" r="5"/></g>
+      <text x="458" y="192">Albury</text><text class="n" x="458" y="213">2 nights, one each way</text>
+      <g class="stay" transform="translate(265 285)"><circle r="13"/><circle class="m1" cx="-1" r="6.5"/><circle class="m2" cx="2.4" cy="-2.4" r="5.4"/></g>
+      <text x="248" y="250" text-anchor="end">Melbourne</text><text class="n" x="248" y="271" text-anchor="end">6 nights</text>
+      <circle class="pass" cx="290" cy="348" r="6"/>
+      <text x="300" y="384" text-anchor="middle">Phillip Island</text><text class="n" x="300" y="405" text-anchor="middle">Day trip</text>
+      <g class="stay" transform="translate(140 352)"><circle r="12"/><circle class="m1" cx="-1" r="6"/><circle class="m2" cx="2.2" cy="-2.2" r="5"/></g>
+      <text x="120" y="388" text-anchor="middle">Apollo Bay</text><text class="n" x="120" y="408" text-anchor="middle">1 night</text>
+    </svg>
+    <ul class="legend">
+      <li><i style="background:var(--home)"></i>Hume both ways</li>
+      <li><i style="background:var(--euc)"></i>Melbourne days</li>
+      <li><i style="background:var(--ochre)"></i>Day trips</li>
+      <li><svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="11" style="fill:var(--ink)"/><circle cx="-1" r="5.5" style="fill:var(--surface)"/><circle cx="2" cy="-2" r="4.5" style="fill:var(--ink)"/></svg>Overnight stay</li>
+    </ul>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="Jump to day"><ol id="daynav"></ol></nav>
+
+<main class="wrap days" id="days"></main>
+
+<section class="more" id="book">
+  <div class="wrap">
+    <h2>Book ahead</h2>
+    <p>Peak season. Pick refundable options until everyone has confirmed. Ticks are saved on this device only.</p>
+    <ul class="check" id="checklist"></ul>
+  </div>
+</section>
+
+<section class="more" id="eat">
+  <div class="wrap">
+    <h2>Cafes and bakeries</h2>
+    <p>Many places close or shorten hours between Christmas and New Year. Check before heading over.</p>
+    <ul class="eats" id="eats"></ul>
+  </div>
+</section>
+
+<section class="more" id="notes">
+  <div class="wrap">
+    <h2>Good to know</h2>
+    <ul class="notes">
+      <li><b>Puffing Billy</b> runs daily except Christmas Day. On Total Fire Ban days it may switch to diesel or change timetables, and it closes on Catastrophic fire danger days. 28 Dec is the swap day.</li>
+      <li><b>Boxing Day Test:</b> Australia v New Zealand at the MCG, 26 to 30 December, play from 10:30am. MCG tours are unlikely to run on Test days, so the plan takes in Day 3 on Mon 28 Dec.</li>
+      <li><b>Penguin Parade:</b> penguins arrive around 8:30pm in December and you leave close to 10pm. Plan a toddler nap and pack warm layers, even in summer. Closed 25 December.</li>
+      <li><b>Lune:</b> four Melbourne shops. Maxi Lune on Lonsdale St stays open until 5pm and is the easiest bet. Holiday hours change each year.</li>
+      <li><b>Fire danger:</b> check the Hazards Near Me (NSW) and VicEmergency apps before each coast and day-trip drive.</li>
+      <li><b>Drive times</b> are approximate driving only. Add stops, and add more for holiday traffic.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="wrap">Draft itinerary, last updated 14 November 2026.</footer>
+
+<script>
+const pin = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+const kinds = {coast:"Coast drive", city:"Melbourne", trip:"Day trip", home:"Hume drive"};
+const penguinLink = "<a href=\"https://www.google.com/maps/search/?api=1&query=Penguin+Parade+Phillip+Island\" target=\"_blank\" rel=\"noopener\">Penguin Parade</a> in the evening. Penguins arrive around 8:30pm. Arrive an hour early and bring warm layers.";
+const cbdWalk = "<a href=\"https://www.google.com/maps/dir/?api=1&origin=Federation+Square+Melbourne&destination=Maxi+Lune+Lonsdale+Street+Melbourne&travelmode=walking&waypoints=Hosier+Lane+Melbourne%7CDegraves+Street+Melbourne%7CBlock+Arcade+Melbourne\" target=\"_blank\" rel=\"noopener\">CBD walk</a>: Flinders Street Station and Fed Square, Hosier Lane, Degraves Street, cake at the Hopetoun Tea Rooms in the Block Arcade.";
+
+/* Days shared by both plans */
+const gor = {id:"dec-25", dow:"Fri", num:"25", mon:"Dec", kind:"trip", title:"Christmas Day on the Great Ocean Road",
+  route:{from:"Melbourne VIC", to:"Apollo Bay VIC", stats:"About 200 km, 3.5 hrs driving", mode:"driving",
+   stops:[
+    {n:"Torquay", q:"Torquay Front Beach VIC", p:"Beach stop where the road begins."},
+    {n:"Split Point Lighthouse", q:"Split Point Lighthouse", wp:true, p:"Short walk to the lighthouse at Aireys Inlet."},
+    {n:"Memorial Arch", q:"Great Ocean Road Memorial Arch", p:"Quick photo stop."},
+    {n:"Lorne", q:"Lorne VIC", wp:true, p:"Picnic Christmas lunch on the foreshore."},
+    {n:"Kennett River", q:"Kennett River VIC", wp:true, p:"Spot koalas in the gum trees along Grey River Road."}
+   ]},
+  plan:["Most of Melbourne is closed today, so it’s the right day to be on the coast.","Pack a picnic. Many cafes along the road will be shut.","The road winds a lot. Plan breaks and have motion sickness supplies handy."],
+  sleep:"Apollo Bay"};
+
+const apostles = {id:"dec-26", dow:"Sat", num:"26", mon:"Dec", kind:"trip", title:"12 Apostles, then back to Melbourne",
+  route:{from:"Apollo Bay VIC", to:"Melbourne VIC", stats:"About 320 km, 4.5 hrs driving", mode:"driving",
+   stops:[
+    {n:"Maits Rest", q:"Maits Rest Rainforest Walk", wp:true, p:"Short rainforest boardwalk loop."},
+    {n:"Twelve Apostles", q:"Twelve Apostles Lookout", wp:true, p:"Arrive by mid-morning, before the tour buses."},
+    {n:"Loch Ard Gorge", q:"Loch Ard Gorge", wp:true, p:"Most dramatic spot on the coast. Steps down to the beach."},
+    {n:"Colac", q:"Colac VIC", p:"Break on the faster inland road home."}
+   ]},
+  plan:["Return inland via Colac rather than retracing the coast. It saves well over an hour.","Quiet evening. Boxing Day crowds are in the city, not out here."],
+  sleep:"Melbourne"};
+
+const puffing = {id:"dec-27", dow:"Sun", num:"27", mon:"Dec", kind:"trip", title:"Puffing Billy and the Dandenongs",
+  route:{from:"Melbourne VIC", to:"Melbourne VIC", stats:"About 1 hr each way", mode:"driving",
+   stops:[
+    {n:"Puffing Billy, Belgrave Station", q:"Puffing Billy Railway Belgrave", wp:true, p:"Pre-booked train. A shorter return ride suits the 2 year old."},
+    {n:"SkyHigh Mount Dandenong", q:"SkyHigh Mount Dandenong", wp:true, p:"City views, gardens and a hedge maze."},
+    {n:"Olinda", q:"Olinda VIC", wp:true, p:"Late lunch in the village tearooms."}
+   ]},
+  plan:["Check the fire danger rating the night before. If it’s a Total Fire Ban day, swap with 28 Dec."],
+  sleep:"Melbourne"};
+
+const mcg = (zooLine) => ({id:"dec-28", dow:"Mon", num:"28", mon:"Dec", kind:"city", title:"Lune, Fitzroy and the MCG",
+  route:{from:"Lune Croissanterie Fitzroy", to:"Melbourne Cricket Ground", stats:"About 40 minutes on foot, or a short tram ride", mode:"walking",
+   stops:[
+    {n:"Fitzroy Gardens", q:"Fitzroy Gardens Melbourne", wp:true, p:"Shady lawns and Cooks’ Cottage on the way."}
+   ]},
+  plan:["Croissants at the original Lune in Fitzroy. Go at opening to beat the queue.","Boxing Day Test, Day 3, Australia v New Zealand, play from 10:30am. Far calmer than Day 1 for the toddler and grandparents.", zooLine, "Pack the car in the evening."],
+  sleep:"Melbourne"});
+
+const toAlbury = {id:"dec-29", dow:"Tue", num:"29", mon:"Dec", kind:"home", title:"Melbourne to Albury",
+  route:{from:"Melbourne VIC", to:"Albury NSW", stats:"About 340 km, 4 hrs driving with the Beechworth detour", mode:"driving",
+   stops:[
+    {n:"Glenrowan", q:"Glenrowan VIC", wp:true, p:"Giant Ned Kelly statue. Quick stop."},
+    {n:"Beechworth Bakery", q:"Beechworth Bakery", wp:true, p:"Lunch in a gold rush town. Pies and vanilla slice."}
+   ]},
+  plan:["Late afternoon by the Murray River at Noreuil Park."],
+  sleep:"Albury"};
+
+const toSydney = {id:"dec-30", dow:"Wed", num:"30", mon:"Dec", kind:"home", title:"Albury to Sydney",
+  route:{from:"Albury NSW", to:"Sydney NSW", stats:"About 555 km, 6 hrs driving", mode:"driving",
+   stops:[
+    {n:"Holbrook", q:"Holbrook Submarine Museum", wp:true, p:"A real submarine in the park. Great first stop."},
+    {n:"Gundagai", q:"Dog on the Tuckerbox Gundagai", wp:true, p:"Dog on the Tuckerbox and lunch."},
+    {n:"Goulburn", q:"Big Merino Goulburn", wp:true, p:"The Big Merino. Last stretch from here."}
+   ]},
+  plan:["Leave early and aim to be home by late afternoon, with New Year’s Eve at home."],
+  sleep:"Home"};
+
+const plans = {
+ coast: {
+  days: [
+   {id:"dec-21", dow:"Mon", num:"21", mon:"Dec", kind:"coast", title:"Sydney to Merimbula",
+    route:{from:"Sydney NSW", to:"Merimbula NSW", stats:"About 460 km, 6 hrs driving", mode:"driving",
+     stops:[
+      {n:"Kiama Blowhole", q:"Kiama Blowhole NSW", wp:true, p:"First break, about 2 hrs in. Blowhole and lighthouse right by the car park."},
+      {n:"Berry", q:"Berry NSW", wp:true, p:"Early lunch. The Berry Donut Van is the classic stop."},
+      {n:"Central Tilba", q:"Central Tilba NSW", wp:true, p:"Heritage village with a cheese factory and fudge shop. Good 30 minute leg stretch."}
+     ]},
+    plan:["Leave by 8am to get ahead of holiday traffic south of Wollongong.","Evening walk along the Merimbula lake boardwalk. Flat and pram friendly."],
+    sleep:"Merimbula"},
+   {id:"dec-22", dow:"Tue", num:"22", mon:"Dec", kind:"coast", title:"Merimbula to Phillip Island",
+    route:{from:"Merimbula NSW", to:"Cowes VIC", stats:"About 600 km, 7.5 hrs driving. The long day.", mode:"driving",
+     stops:[
+      {n:"Cann River", q:"Cann River VIC", wp:true, p:"About 2 hrs in. Fuel, toilets and snacks before the long forest stretch."},
+      {n:"Lakes Entrance", q:"Lakes Entrance VIC", wp:true, p:"Lunch on the Esplanade, about halfway. Fish and chips by the water."},
+      {n:"Coal Creek Community Park, Korumburra", q:"Coal Creek Community Park and Museum Korumburra", wp:true, p:"Afternoon break. Open space for the kids to run around before the last hour."}
+     ]},
+    plan:["Leave Merimbula by 8am to arrive around 5pm.","Swap drivers at each stop.","Easy dinner and an early night. No penguins tonight."],
+    sleep:"Phillip Island (Cowes)"},
+   {id:"dec-23", dow:"Wed", num:"23", mon:"Dec", kind:"trip", title:"Phillip Island day",
+    route:{from:"Cowes VIC", to:"Penguin Parade Phillip Island", stats:"Short drives around the island", mode:"driving",
+     stops:[
+      {n:"Koala Conservation Reserve", q:"Koala Conservation Reserve Phillip Island", wp:true, p:"Treetop boardwalks, about an hour."},
+      {n:"The Nobbies", q:"Nobbies Centre Phillip Island", wp:true, p:"Cliff-top boardwalk with fur seals offshore."}
+     ]},
+    plan:["Slow morning after yesterday’s drive.","Afternoon on calm Cowes beach, then a long nap for the toddler.", penguinLink],
+    sleep:"Phillip Island (Cowes)"},
+   {id:"dec-24", dow:"Thu", num:"24", mon:"Dec", kind:"coast", title:"To Melbourne, then the CBD on foot",
+    route:{from:"Cowes VIC", to:"Melbourne VIC", stats:"About 140 km, 2 hrs driving", mode:"driving", stops:[]},
+    plan:["Leave Phillip Island by 9am and check in around 11am.","Afternoon " + cbdWalk,"Finish at Maxi Lune on Lonsdale St for croissants (check Christmas Eve hours).","Evening: Myer Christmas windows on Bourke St and the city lights."],
+    sleep:"Melbourne"},
+   gor, apostles, puffing,
+   mcg("Not into cricket? Melbourne Zoo in Parkville instead."),
+   toAlbury, toSydney
+  ],
+  checklist: [
+   ["penguins","Penguin Parade tickets","Wed 23 Dec"],
+   ["stay-coast","Coast stays","Merimbula 21 Dec, Phillip Island 22 and 23 Dec"],
+   ["stay-melb","Melbourne base","24, 26, 27 and 28 Dec. A house or large apartment if friends join"],
+   ["stay-apollo","Apollo Bay stay","Fri 25 Dec. Christmas night, so book early"],
+   ["puffing","Puffing Billy tickets","Sun 27 Dec"],
+   ["cricket","Boxing Day Test tickets","Day 3, Mon 28 Dec, via Ticketek, if going"],
+   ["stay-albury","Albury stay","Tue 29 Dec"]
+  ]
+ },
+ hume: {
+  days: [
+   {id:"dec-21", dow:"Mon", num:"21", mon:"Dec", kind:"home", title:"Sydney to Albury",
+    route:{from:"Sydney NSW", to:"Albury NSW", stats:"About 555 km, 6 hrs driving", mode:"driving",
+     stops:[
+      {n:"Goulburn", q:"Big Merino Goulburn", wp:true, p:"About 2 hrs in. Morning tea at the Big Merino."},
+      {n:"Gundagai", q:"Dog on the Tuckerbox Gundagai", wp:true, p:"Lunch and the Dog on the Tuckerbox."},
+      {n:"Holbrook", q:"Holbrook Submarine Museum", wp:true, p:"A real submarine in the park. Afternoon leg stretch."}
+     ]},
+    plan:["Leave by 8am.","Evening by the Murray River at Noreuil Park."],
+    sleep:"Albury"},
+   {id:"dec-22", dow:"Tue", num:"22", mon:"Dec", kind:"home", title:"Albury to Melbourne, then the CBD",
+    route:{from:"Albury NSW", to:"Melbourne VIC", stats:"About 325 km, 3.5 hrs driving", mode:"driving",
+     stops:[
+      {n:"Glenrowan", q:"Glenrowan VIC", wp:true, p:"Giant Ned Kelly statue. Quick stop."}
+     ]},
+    plan:["Leave Albury by 8:30am and check in around 1pm.","Afternoon " + cbdWalk,"Finish at Maxi Lune on Lonsdale St for croissants. Open until 5pm.","Evening: Myer Christmas windows on Bourke St and the city lights."],
+    sleep:"Melbourne"},
+   {id:"dec-23", dow:"Wed", num:"23", mon:"Dec", kind:"trip", title:"Phillip Island day trip",
+    route:{from:"Melbourne VIC", to:"Penguin Parade Phillip Island", stats:"About 140 km, 2 hrs each way. Back around midnight.", mode:"driving",
+     stops:[
+      {n:"Koala Conservation Reserve", q:"Koala Conservation Reserve Phillip Island", wp:true, p:"Treetop boardwalks, about an hour."},
+      {n:"The Nobbies", q:"Nobbies Centre Phillip Island", wp:true, p:"Cliff-top boardwalk with fur seals offshore."}
+     ]},
+    plan:["Easy morning in Melbourne. Scienceworks or a bay beach if the kids need to burn energy.","Leave around 12pm. Koalas from 2pm, then the Nobbies.","Early dinner in Cowes around 5:30pm.", penguinLink,"Leave by 10pm with pyjamas already on, so the kids sleep in the car. Two adults share the drive home."],
+    sleep:"Melbourne"},
+   {id:"dec-24", dow:"Thu", num:"24", mon:"Dec", kind:"city", title:"Market, zoo and Christmas Eve",
+    route:{from:"Queen Victoria Market", to:"Melbourne Zoo", stats:"About 10 minutes by car or tram", mode:"driving",
+     stops:[]},
+    plan:["Sleep in after the late night.","Late morning at Queen Victoria Market. Hot jam doughnuts from the van. Christmas Eve hours may be shorter.","Afternoon at Melbourne Zoo in Parkville.","Evening: Christmas lights, then an early night."],
+    sleep:"Melbourne"},
+   gor, apostles, puffing,
+   mcg("Not into cricket? Lygon St in Carlton for Brunetti and Pidapipó gelato, then Carlton Gardens playground."),
+   toAlbury, toSydney
+  ],
+  checklist: [
+   ["stay-albury","Albury stays","Mon 21 Dec and Tue 29 Dec"],
+   ["stay-melb","Melbourne base","22 to 29 Dec as one booking, so you don’t repack for Apollo Bay on the 25th"],
+   ["penguins","Penguin Parade tickets","Wed 23 Dec"],
+   ["stay-apollo","Apollo Bay stay","Fri 25 Dec. Christmas night, so book early"],
+   ["puffing","Puffing Billy tickets","Sun 27 Dec"],
+   ["cricket","Boxing Day Test tickets","Day 3, Mon 28 Dec, via Ticketek, if going"]
+  ]
+ }
+};
+
+const eats = [
+ ["Lune, Maxi Lune on Lonsdale St","Maxi Lune Lonsdale Street Melbourne","The big new CBD shop. Open until 5pm."],
+ ["Lune, Fitzroy","Lune Croissanterie Fitzroy","The original warehouse. Expect a queue."],
+ ["Hopetoun Tea Rooms","Hopetoun Tea Rooms Block Arcade","Cake window in the Block Arcade. A treat for the grandparents."],
+ ["American Doughnut Kitchen","American Doughnut Kitchen Queen Victoria Market","Hot jam doughnuts at the market."],
+ ["Brunetti, Carlton","Brunetti Lygon Street Carlton","Italian pastries and cakes."],
+ ["Pidapipó","Pidapipo Lygon Street Carlton","Gelato that kids and adults both love."],
+ ["Tivoli Road Bakery","Tivoli Road Bakery South Yarra","Excellent bread and pastries in South Yarra."],
+ ["Higher Ground","Higher Ground Melbourne","Big, airy CBD cafe. Easy with a group."],
+ ["Berry Donut Van","Berry Donut Van","Coast route, day 1."],
+ ["Beechworth Bakery","Beechworth Bakery","On the drive home, 29 Dec."]
+];
+
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const searchUrl = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+function dirUrl(r){
+  const p = new URLSearchParams({api:"1", origin:r.from, destination:r.to, travelmode:r.mode||"driving"});
+  const wps = r.stops.filter(s => s.wp).map(s => s.q).slice(0,3);
+  if (wps.length) p.set("waypoints", wps.join("|"));
+  return "https://www.google.com/maps/dir/?" + p.toString();
+}
+const place = s => s.replace(/ (NSW|VIC)$/,"");
+
+function dayHtml(tab, d){
+  const r = d.route;
+  const stops = [
+    `<li><a href="${searchUrl(r.from)}" target="_blank" rel="noopener">${esc(place(r.from))}</a><p>Start</p></li>`,
+    ...r.stops.map((s,i) => `<li class="stop"><span class="no">${i+1}</span><a href="${searchUrl(s.q)}" target="_blank" rel="noopener">${esc(s.n)}</a><p>${esc(s.p)}</p></li>`),
+    `<li class="end"><a href="${searchUrl(r.to)}" target="_blank" rel="noopener">${esc(place(r.to))}</a><p>${r.from===r.to ? "Back to base" : "Finish"}</p></li>`
+  ].join("");
+  const btn = r.mode === "walking" ? "Open walking route" : "Open route in Google Maps";
+  return `<article class="day" id="${tab}-${d.id}" data-kind="${d.kind}">
+    <div class="date"><span class="dow">${d.dow}</span><span class="num">${d.num}</span><span class="mon">${d.mon}</span></div>
+    <div>
+      <span class="kind">${kinds[d.kind]}</span>
+      <h3>${esc(d.title)}</h3>
+      <p class="stats">${esc(r.stats)}</p>
+      <div class="route">
+        <ol class="stops">${stops}</ol>
+        <a class="btn" href="${dirUrl(r)}" target="_blank" rel="noopener">${pin}${btn}</a>
+      </div>
+      <ul class="plan">${d.plan.map(x => `<li>${x}</li>`).join("")}</ul>
+      <p class="sleep">Sleep: <b>${esc(d.sleep)}</b></p>
+    </div>
+  </article>`;
+}
+
+let io, current;
+const storeKey = tab => tab === "coast" ? "mel-trip-checks" : "mel-trip-checks-hume";
+
+function render(tab){
+  if (tab === current) return;
+  current = tab;
+  const plan = plans[tab];
+  document.querySelectorAll('[role="tab"]').forEach(b => {
+    const on = b.dataset.tab === tab;
+    b.setAttribute("aria-selected", on);
+    b.tabIndex = on ? 0 : -1;
+    document.getElementById(b.getAttribute("aria-controls")).hidden = !on;
+  });
+  document.getElementById("daynav").innerHTML = plan.days.map(d =>
+    `<li><a href="#${tab}-${d.id}" data-kind="${d.kind}" data-id="${tab}-${d.id}"><span>${d.dow}</span><b>${d.num}</b></a></li>`).join("");
+  document.getElementById("days").innerHTML = plan.days.map(d => dayHtml(tab, d)).join("");
+
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(storeKey(tab)) || "{}") || {}; } catch(e) { saved = {}; }
+  const cl = document.getElementById("checklist");
+  cl.innerHTML = plan.checklist.map(([k,t,s]) =>
+    `<li><label><input type="checkbox" data-k="${k}" ${saved[k] ? "checked" : ""}><span>${esc(t)}<small>${esc(s)}</small></span></label></li>`).join("");
+  cl.onchange = e => {
+    const k = e.target.dataset.k; if (!k) return;
+    saved[k] = e.target.checked;
+    try { localStorage.setItem(storeKey(tab), JSON.stringify(saved)); } catch(err) {}
+  };
+
+  if (io) io.disconnect();
+  const links = [...document.querySelectorAll(".daynav a")];
+  io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(a => a.classList.toggle("on", a.dataset.id === en.target.id));
+      const on = links.find(a => a.dataset.id === en.target.id);
+      if (on) { const ol = on.closest("ol"); ol.scrollTo({left: on.offsetLeft - ol.clientWidth/2 + on.clientWidth/2, behavior: "smooth"}); }
+    });
+  }, {rootMargin:"-30% 0px -60% 0px"});
+  document.querySelectorAll(".day").forEach(el => io.observe(el));
+}
+
+document.getElementById("eats").innerHTML = eats.map(([n,q,p]) =>
+  `<li><a href="${searchUrl(q)}" target="_blank" rel="noopener">${esc(n)}</a><p>${esc(p)}</p></li>`).join("");
+
+const tabFromHash = () => location.hash.slice(1).startsWith("hume") ? "hume" : "coast";
+function syncFromHash(){
+  render(tabFromHash());
+  const id = location.hash.slice(1);
+  const el = id && id.includes("-dec-") ? document.getElementById(id) : null;
+  if (el) el.scrollIntoView();
+}
+window.addEventListener("hashchange", syncFromHash);
+
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+tabs.forEach((b, i) => {
+  b.addEventListener("click", () => { location.hash = b.dataset.tab; });
+  b.addEventListener("keydown", e => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+    next.focus(); location.hash = next.dataset.tab;
+  });
+});
+
+syncFromHash();
+</script>
+</body>
+</html>
